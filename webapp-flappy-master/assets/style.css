@@ -1,0 +1,38 @@
+h1 {
+  text-align: center;
+  color: red;
+  font-size: 50px;
+  font-style: Calabri;
+}
+h2 {
+  color: red;
+  font-size: 30px;
+  font style: Calabri;
+}
+p {
+  color: white;
+  font-size: 20px;
+  font-style: Arial
+}
+ul {
+  color: white;
+  font-size: 20px;
+  font-style: Arial
+}
+
+a:hover{
+  color: red;
+  font-size: 30px;
+  font-style: calabri;
+}
+body{
+  background-image:url("stars.jpg")
+}
+a {
+  color: blue;
+}
+h3 {
+  color: red;
+  font-size: 20px;
+  font style: Calabri;
+}
