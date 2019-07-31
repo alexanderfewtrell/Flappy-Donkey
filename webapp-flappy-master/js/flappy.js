@@ -1,7 +1,17 @@
   var actions = { preload: preload, create: create,update: update };
-  var game = new Phaser.Game(790, 400, Phaser.AUTO, "game", actions);
+
+ var width = 790
+
+ var height = 400;
+  var game = new Phaser.Game(width, height, Phaser.AUTO, "game", actions);
 
  var score = 0;
+
+ var gapSize = 135;
+
+ var blockHeight = 50;
+
+ var gapMargin = 30;
 
  var labelScore;
 
@@ -11,6 +21,8 @@
 
  var pipeInterval = 1.75;
 
+var splashDisplay
+
  function preload() {
   game.load.image("playerImg","../assets/donkey.png");
   game.load.audio("score", "../assets/point.ogg");
@@ -19,52 +31,100 @@
 
 
  function create() {
+
   game.stage.setBackgroundColor("#F3D3A3");
 
   labelScore = game.add.text(20, 20, "0",
   {font: "30px Arial", fill: "#FFFFFF"});
   player = game.add.sprite(80, 200, "playerImg");
+  player.kill();
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.arcade.enable(player);
-  player.body.gravity.y = 200;
 
+  var pipeInterval = 1.75;
   game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(playerJump);
-  game.time.events.loop(pipeInterval * Phaser.Timer.SECOND, generatePipe);
+  game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(start);
+  splashDisplay = game.add.text(200,200, "Press ENTER to start")
 
+//  player.anchor.setTo(0.5, 0.5);
  }
 
 
  function update() {
   game.physics.arcade.overlap(player, pipes, gameOver);
 
-    if (player.body.position.y>400){
-      player.body.position.y=0;
-    }
+  if (player.body.position.y>400){
+    player.body.position.y=0;
+  }
   if(player.body.position.y<0){
     player.body.position.y=400;
+    //player.rotation += 1;
+    //player.rotation = Math.atan(player.body.velocity.y / 200);
+
   }
  }
 
+ function start() {
+   player.revive();
+   player.body.gravity.y = 200;
+game.time.events.loop(pipeInterval * Phaser.Timer.SECOND, generatePipe);
+   splashDisplay.destroy();
+ }
 
+
+
+
+ //function addPipeBlock(x, y) {
+//  var block = game.add.sprite(x,y,"pipeBlock");
+  //pipes.push(block);
+  //game.physics.arcade.enable(block);
+  //block.body.velocity.x = -200;
+  //if(score < 5) {
+  //}else {
+  //}
+ //}
  function addPipeBlock(x, y) {
-  var block = game.add.sprite(x,y,"pipeBlock");
-  pipes.push(block);
-  game.physics.arcade.enable(block);
-  block.body.velocity.x = -200;
+ var block = game.add.sprite(x,y,"pipeBlock");
+ pipes.push(block);
+ game.physics.arcade.enable(block);
+ if (score > 40) {
+   splashDisplay = game.add.text(200,200, "You're a God at Flappy Donkey!")
+ } else {
+   if (score > 30) {
+     block.body.velocity.x = -125;
+   } else {
+     if (score > 20) {
+       block.body.velocity.x = -150;
+     } else {
+       if (score > 10) {
+         block.body.velocity.x = -175;
+       } else {
+           block.body.velocity.x = -200;
+         }
+       }
+     }
+   }
  }
 
 
 
- function generatePipe() {
-  var gapStart = game.rnd.integerInRange(1, 5);
-  for (var count = 0; count < 8; count++) {
-  if(count != gapStart && count != gapStart+1){
-  addPipeBlock(750, count * 50);
-  }
-  }
-  changeScore();
- }
+ //function generatePipe() {
+//  var gapStart = game.rnd.integerInRange(1, 5);
+//  for (var count = 0; count < 8; count++) {
+//  if(count != gapStart && count != gapStart+1){
+//  addPipeBlock(750, count * 50);
+  //}
+  function generatePipe() {
+    var gapStart = game.rnd.integerInRange(gapMargin, height - gapSize - gapMargin);
 
+    for(var y = gapStart; y > 0; y-= blockHeight){
+      addPipeBlock(width, y - blockHeight);
+    }
+    for(var y = gapStart + gapSize; y < height; y += blockHeight) {
+      addPipeBlock(width, y);
+    }
+    changeScore();
+  }
 
  function playerJump() {
   player.body.velocity.y = -200;
@@ -84,7 +144,7 @@ function gameOver(){
 
    registerScore(score);
    game.state.restart();
-  
+
 // game.state.restart();
  score = 0;
 }
