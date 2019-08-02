@@ -8,9 +8,9 @@ jQuery("#scoresbtn").on("click", function() {
  jQuery("#content").empty();
  jQuery("#content").append(
  "<ul>" +
- "<li>" + "?" + "</li>" +
- "<li>" + "Bob" + "</li>" +
- "<li>" + "!DGG!" + "</li>" +
+ "<li>" + "1.?" + "</li>" +
+ "<li>" + "2.Bob" + "</li>" +
+ "<li>" + "3.!DGG!" + "</li>" +
  "</ul>"
  );
 });
@@ -24,7 +24,7 @@ jQuery("#helpbtn").on("click", function() {
  jQuery("#content").empty();
  jQuery("#content").append(
  "<ul>"
- + "<li>" + "Press SPACE to flap your wings" + "</li>"
+ + "<li>" + "Click or Tap to flap your wings" + "</li>"
  + "<li>" + "Avoid the incoming pipes" + "</li>"
  +"<li>" + "If you crash, just try again!" + "</li>"
  +"<li>" + "Enjoy!" + "</li>"

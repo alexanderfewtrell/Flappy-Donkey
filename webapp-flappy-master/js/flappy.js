@@ -42,9 +42,9 @@ var splashDisplay
   game.physics.arcade.enable(player);
 
   var pipeInterval = 1.75;
-  game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(playerJump);
-  game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(start);
-  splashDisplay = game.add.text(200,200, "Press ENTER to start")
+  game.input.onDown.add(playerJump);
+  game.input.onDown.add(start);
+  splashDisplay = game.add.text(200,200, "Tap to start")
 
 //  player.anchor.setTo(0.5, 0.5);
  }
@@ -69,6 +69,7 @@ var splashDisplay
    player.body.gravity.y = 200;
 game.time.events.loop(pipeInterval * Phaser.Timer.SECOND, generatePipe);
    splashDisplay.destroy();
+   game.input.onDown.remove(start);
  }
 
 
@@ -147,6 +148,7 @@ function gameOver(){
 
 // game.state.restart();
  score = 0;
+ game.input.onDown.add(start);
 }
 
 // the Game object used by the phaser.io library
